@@ -8,16 +8,16 @@ $(document).ready(function () {
     let $tweet = `
   <article class="tweet-container">
       <header id="tweet-header">
-      <div class="profile">
-        <div class="name-avatar">
-          <img src="${tweet.user.avatars}">
-          <h3>${tweet.user.name}</h3>
+        <div class="profile">
+          <div class="name-avatar">
+            <img src="${tweet.user.avatars}">
+            <h3>${tweet.user.name}</h3>
+          </div>
+          <div class="user-handle">
+            <h3>${tweet.user.handle}</h3>
+          </div>
         </div>
-        <div class="user-handle">
-          <h3>${tweet.user.handle}</h3>
-        </div>
-      </div>
-        <h3>${tweet.content.text}</h3>
+        <h3>${escape(tweet.content.text)}</h3>
       </header>
       <footer id="tweet-footer">
         <h5>${timeago.format(tweet.created_at)}</h5>
@@ -41,24 +41,27 @@ $(document).ready(function () {
 
   $('.form').submit(function (event) {
     event.preventDefault();
-    // console.log('check: ', event);
+
     let serializedForm = $(this).serialize();
-    // console.log(serializedForm)
-    const userTweet = $('.form').children('#tweet-text').val();
+
+    const userTweet = $(this).children('#tweet-text').val();
     if (userTweet.length > 140) {
-      return alert('Dont type more than 140 characrters!');
+      $(this).siblings('#error').html('Dont type more than 140 characrters!').slideDown();;
+      return
     }
     if (userTweet === '' || userTweet === null) {
-      return alert('Tweet cannot be empty!');
+      $(this).siblings('#error').html('Tweet cannot be empty!').slideDown();
+      return
     }
+    $(this).siblings('#error').html('');
     $.ajax('/tweets', { method: 'POST', data: serializedForm })
       .then(function () {
-        // console.log('done');
+        $('#tweet-text').val('');
+        $('#counter').val('140');
         loadtweets();
       });
-    //console.log(serializedForm)
-
-  });
+      
+    });
 
   const loadtweets = function () {
     $.ajax('/tweets', { method: 'GET' })
@@ -68,4 +71,21 @@ $(document).ready(function () {
   }
 
 
+  const escape = function (str) {
+    let div = document.createElement("div");
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+  };
 });
+
+$(document).scroll(function(){
+  let scrollPos = $(window).scrollTop();
+  if(scrollPos<10){
+    $('#scroll').css('display','none');
+  }else{
+    $('#scroll').css('display','block');
+    $('#scroll').click(function(){
+      $('#tweet-text').focus();
+    })
+  }
+})

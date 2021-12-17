@@ -1,14 +1,15 @@
-#headers{
-  z-index: -1;
+.header{
+  /* z-index: -1; */
   height: 400px;
-  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #666f7d;
-  background-image: url("https://www.transparenttextures.com/patterns/beige-paper.png");
-  margin-top: 4em;
+
+  background-color: #00105e;
+  background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-light.png");
+  margin-top: 3em;
+  color: #bfff00c1;
 }
 
 #img1 {
