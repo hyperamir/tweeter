@@ -4,9 +4,9 @@ A simple single-page AJAX-based Twitter clone that uses jQuery,HTML5 and CSS3
 
 ## Final Product
 
-!["Screenshot of URLs page"](https://github.com/hyperamir/tinyapp/blob/master/docs/Screen%20Shot%202021-12-09%20at%205.10.54%20PM.png?raw=true)
+!["Screenshot of main page compose box"](https://github.com/hyperamir/tweeter/blob/master/docs/Tweeter-main%20page.png?raw=true)
 
-!["Screenshot of register page"](https://github.com/hyperamir/tinyapp/blob/master/docs/Screen%20Shot%202021-12-09%20at%205.11.45%20PM.png?raw=true)
+!["Screenshot of tweets on mobile phone"](https://github.com/hyperamir/tweeter/blob/master/docs/Tweets-mobile-size.png?raw=true)
 
 ## Dependencies
 
