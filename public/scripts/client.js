@@ -3,9 +3,9 @@
  * jQuery is already loaded
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
-$(document).ready(function () {
-  const createTweetElement = (tweet) => {
-    let $tweet = `
+
+const createTweetElement = (tweet) => {
+  let $tweet = `
   <article class="tweet-container">
       <header id="tweet-header">
         <div class="profile">
@@ -25,19 +25,33 @@ $(document).ready(function () {
       </footer>
     </article>
   `
-    return $tweet;
-  }
+  return $tweet;
+}
 
-  const renderTweets = function (tweets) {
-    // loops through tweets
-    for (const tweet of tweets) {
-      // calls createTweetElement for each tweet
-      let $tweet = createTweetElement(tweet);
-      // takes return value and appends it to the tweets container
-      $(".tweets-container").prepend($tweet);
-    }
+const renderTweets = function (tweets) {
+  // loops through tweets
+  for (const tweet of tweets) {
+    // calls createTweetElement for each tweet
+    let $tweet = createTweetElement(tweet);
+    // takes return value and appends it to the tweets container
+    $(".tweets-container").prepend($tweet);
   }
+}
 
+const loadtweets = function () {
+  $.ajax({ url: '/tweets', method: 'GET', dataType: 'json' })
+    .then(function (response) {
+      renderTweets(response);
+    })
+}
+
+const escape = function (str) {
+  let div = document.createElement("div");
+  div.appendChild(document.createTextNode(str));
+  return div.innerHTML;
+};
+
+$(document).ready(function () {
 
   $('.form').submit(function (event) {
     event.preventDefault();
@@ -58,34 +72,27 @@ $(document).ready(function () {
       .then(function () {
         $('#tweet-text').val('');
         $('#counter').val('140');
-        loadtweets();
+        // $("textarea").val("");
+        $.get("http://localhost:8080/tweets", data => {
+          const newTweet = [data.slice(-1).pop()];
+          renderTweets(newTweet);
+        })
       });
-      
-    });
 
-  const loadtweets = function () {
-    $.ajax('/tweets', { method: 'GET' })
-      .then(function (response) {
-        renderTweets(response);
-      })
-  }
+  });
 
+  loadtweets();
 
-  const escape = function (str) {
-    let div = document.createElement("div");
-    div.appendChild(document.createTextNode(str));
-    return div.innerHTML;
-  };
 });
 
-$(document).scroll(function(){
+$(document).scroll(function () {
   let scrollPos = $(window).scrollTop();
-  if(scrollPos<10){
-    $('#scroll').css('display','none');
-  }else{
-    $('#scroll').css('display','block');
-    $('#scroll').click(function(){
+  if (scrollPos < 10) {
+    $('#scroll').css('display', 'none');
+  } else {
+    $('#scroll').css('display', 'block');
+    $('#scroll').click(function () {
       $('#tweet-text').focus();
-    })
+    });
   }
 })

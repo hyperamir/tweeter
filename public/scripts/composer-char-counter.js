@@ -8,6 +8,10 @@ $(document).ready(function () {
       $("#counter").css(
         'color', 'red'
       );
+    }else{
+      $("#counter").css(
+        'color', '#545149'
+      );
     }
   });
 });
